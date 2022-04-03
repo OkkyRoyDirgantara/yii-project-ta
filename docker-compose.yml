@@ -7,3 +7,27 @@ services:
       - ./:/app:delegated
     ports:
       - '8000:80'
+    networks:
+      - my-network
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=yii-ta
+      - MYSQL_USER=yii-ta
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+    #volumes:
+    #  - ~/mysql:/var/lib/mysql
+    networks:
+    - my-network
+volumes:
+  my-db:
+networks:
+  my-network:
+    driver: bridge
