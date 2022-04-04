@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\NewsSearchModel;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -77,7 +78,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['/admin/admin-panel']);
         }
 
         $model->password = '';
@@ -124,5 +125,16 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionNews()
+    {
+        $searchModel = new NewsSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('news-list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

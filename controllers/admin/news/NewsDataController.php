@@ -1,9 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace app\controllers\admin\news;
 
 use app\models\NewsModel;
 use app\models\NewsSearchModel;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -11,8 +12,9 @@ use yii\filters\VerbFilter;
 /**
  * NewsController implements the CRUD actions for NewsModel model.
  */
-class NewsController extends Controller
+class NewsDataController extends Controller
 {
+    public $layout = '../admin/layouts/main';
     /**
      * @inheritDoc
      */
@@ -38,13 +40,17 @@ class NewsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new NewsSearchModel();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }else{
+            $searchModel = new NewsSearchModel();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('../../../news/index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     /**
@@ -55,9 +61,13 @@ class NewsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }else{
+            return $this->render('../../../news/view', [
+                'model' => $this->findModel($id),
+            ]);
+        }
     }
 
     /**
@@ -67,19 +77,23 @@ class NewsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new NewsModel();
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }else{
+            $model = new NewsModel();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('../../../news/create', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -91,15 +105,19 @@ class NewsController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }else{
+            $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            return $this->render('../../../news/update', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -111,9 +129,13 @@ class NewsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }else{
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        }
     }
 
     /**

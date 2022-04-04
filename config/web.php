@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'layout' => 'main',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -46,15 +47,20 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [],
-        ],
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@app/views' => '@app/views/admin',
-                ],
+            'rules' => [
+                '/login' => 'site/login',
+                '/logout' => 'site/logout',
+                '/admin' => 'admin/admin-panel',
+                '/news' => 'site/news',
             ],
         ],
+//        'view' => [
+//            'theme' => [
+//                'pathMap' => [
+//                    '@app/views' => '@app/views/admin',
+//                ],
+//            ],
+//        ],
     ],
     'params' => $params,
 ];
