@@ -16,7 +16,7 @@ class m220403_032128_create_news_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string(),
             'content' => $this->text(),
-            'date' => $this->date(),
+            'date' => $this->timestamp(),
             'image' => $this->string(),
         ]);
     }

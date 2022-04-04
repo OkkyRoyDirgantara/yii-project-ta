@@ -90,6 +90,7 @@ class NewsDataController extends Controller
                         $model->image->name = 'news_'. $model->id . Yii::$app->getSecurity()->generateRandomString() .'.' . $model->image->extension;
                         $model->image->saveAs('@app/web/storage/img/' . $model->image->name);
                         $model->image = $model->image->name;
+                        $model->date = date('Y-m-d H:i:s');
                         $model->save();
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
