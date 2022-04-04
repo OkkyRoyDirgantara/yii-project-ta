@@ -1,6 +1,7 @@
 <?php
 
 use app\models\NewsModel;
+use yii\helpers\BaseUrl;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -34,7 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'content:ntext',
             'date',
-            'image',
+            [
+                    'format' => 'html',
+                    'attribute' => 'image',
+                'value' => function($data) {
+                    return "<img src='".BaseUrl::base()."/storage/img/".$data->image."' width='100px' height='100px'>";
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, NewsModel $model, $key, $index, $column) {

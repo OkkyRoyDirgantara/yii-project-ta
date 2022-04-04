@@ -87,8 +87,9 @@ class NewsDataController extends Controller
                 if ($model->load($this->request->post()) && $model->save()) {
                     $model->image = UploadedFile::getInstance($model, 'image');
                     if ($model->image && $model->validate(['image'])) {
-                        $model->image->saveAs('@app/storage/img/' . $model->image->baseName . '.' . $model->image->extension);
-                        $model->image = $model->image->baseName . '.' . $model->image->extension;
+                        $model->image->name = 'news_'. $model->id . Yii::$app->getSecurity()->generateRandomString() .'.' . $model->image->extension;
+                        $model->image->saveAs('@app/web/storage/img/' . $model->image->name);
+                        $model->image = $model->image->name;
                         $model->save();
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
