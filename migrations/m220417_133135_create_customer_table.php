@@ -16,8 +16,24 @@ class m220417_133135_create_customer_table extends Migration
             'id' => $this->primaryKey(),
             'nama' => $this->string(100)->notNull(),
             'email' => $this->string(100)->notNull(),
-            'user_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer(),
         ]);
+
+        $this->createIndex(
+            'idx-customer-user_id',
+            'customer',
+            'user_id'
+        );
+
+
+        $this->addForeignKey(
+            'fk-customer-user_id',
+            'customer',
+            'user_id',
+            'user',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**
