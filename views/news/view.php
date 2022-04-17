@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\BaseUrl;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -33,7 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'content:ntext',
             'date',
-            'image',
+            [
+                'attribute' => 'image',
+                'value' => function($data){
+                    return Html::img(BaseUrl::base()."/storage/img/".$data->image, ['width' => '100px']);
+                },
+                'format' => 'html',
+            ],
         ],
     ]) ?>
 
