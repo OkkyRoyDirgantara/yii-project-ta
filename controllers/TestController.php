@@ -23,24 +23,38 @@ class TestController extends Controller
     }
     */
 
+//    public function behaviors()
+//    {
+//        return [
+//            [
+//                'class' => 'yii\filters\HttpCache',
+//                'only' => ['index'],
+//                'lastModified' => function($action, $params){
+//            $q = new Query();
+//            return $q->from('customer')->max('created_at');
+//                }
+//            ]
+//        ];
+//    }
+
     public function behaviors()
     {
         return [
             [
                 'class' => 'yii\filters\HttpCache',
                 'only' => ['index'],
-                'lastModified' => function($action, $params){
-            $q = new Query();
-            return $q->from('customer')->max('created_at');
-                }
-            ]
+                'etagSeed' => function ($action, $params) {
+                    $customerModel = CustomerModel::find()->all();
+                    return serialize([$customerModel]);
+                },
+            ],
         ];
     }
 
 
     public function actionIndex()
     {
-        return "Hello woraaald";
+        return "Hello world";
     }
 
     public function actionTestCache()
@@ -53,7 +67,7 @@ class TestController extends Controller
             $data = date("d.m.Y H:i:s");
             $cache->set("my_cached_data", $data, 5);
         }
-        return $data;
+        var_dump($data);
     }
 
     public function actionQueryCaching()
@@ -66,7 +80,7 @@ class TestController extends Controller
         $user = new CustomerModel();
         $user->name = "cached user name";
         $user->email = "cacheduseremail@gmail.com";
-        $user->created_at = time();
+        $user->created_at = date('Y-m-d G:i:s');
         $user->save();
         echo "==========";
         var_dump(CustomerModel::find()->count());
