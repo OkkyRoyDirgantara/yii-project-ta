@@ -37,19 +37,19 @@ class TestController extends Controller
 //        ];
 //    }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => 'yii\filters\HttpCache',
-                'only' => ['index'],
-                'etagSeed' => function ($action, $params) {
-                    $customerModel = CustomerModel::find()->all();
-                    return serialize([$customerModel]);
-                },
-            ],
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            [
+//                'class' => 'yii\filters\HttpCache',
+//                'only' => ['index'],
+//                'etagSeed' => function ($action, $params) {
+//                    $customerModel = CustomerModel::find()->all();
+//                    return serialize([$customerModel]);
+//                },
+//            ],
+//        ];
+//    }
 
 
     public function actionIndex()
