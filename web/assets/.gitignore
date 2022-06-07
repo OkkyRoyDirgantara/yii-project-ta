@@ -1,2 +1,6 @@
 *
+!vendor/
+!img/
+!css/
+!js/
 !.gitignore
