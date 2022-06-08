@@ -32,7 +32,7 @@ class NewsModel extends \yii\db\ActiveRecord
             [['content'], 'string'],
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
-            [['image'], 'file', 'extensions' => 'png, jpg'],
+            [['image'], 'file'],
         ];
     }
 

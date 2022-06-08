@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\NewsModel;
 use app\models\NewsSearchModel;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -62,8 +64,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        //get all data news descending
+        $news = NewsModel::find()->orderBy(['date' => SORT_DESC])->all();
+        return $this->render('index', [
+            'newsData' => $news,
+        ]);
     }
+
+    public function actionView($id)
+    {
+        //get data news by id
+        if (($model = NewsModel::findOne(['id' => $id])) !== null) {
+            return $this->render('view', [
+                'news' => $model,
+            ]);
+        }
+    }
+
+    public function findModel($id)
+    {
+        if (($model = NewsModel::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
 
     /**
      * Login action.
