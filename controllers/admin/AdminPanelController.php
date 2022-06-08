@@ -13,7 +13,7 @@ class AdminPanelController extends \yii\web\Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['/site/login']);
         }else{
-            return $this->render('../site/index');
+            return $this->render('index');
         }
     }
 
