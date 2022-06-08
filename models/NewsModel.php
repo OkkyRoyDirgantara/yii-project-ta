@@ -20,7 +20,7 @@ class NewsModel extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'News';
+        return 'news';
     }
 
     /**
